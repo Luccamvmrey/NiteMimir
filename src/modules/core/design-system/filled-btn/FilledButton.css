@@ -1,0 +1,10 @@
+.filled-btn {
+    background-color: var(--text-color);
+    color: var(--bg-main);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}

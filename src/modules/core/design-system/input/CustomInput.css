@@ -1,0 +1,13 @@
+input {
+    width: 200px;
+    background-color: transparent;
+    border: 1px solid var(--bg-main);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: var(--bg-main);
+}
+
+input:focus {
+    outline: none;
+}

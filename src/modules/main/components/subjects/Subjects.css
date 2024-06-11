@@ -1,0 +1,72 @@
+.subjects-list-container {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+
+    border-radius: 0.5rem;
+    background-color: var(--card-bg);
+    box-shadow: var(--default-shadow);
+
+    padding: 24px;
+}
+
+.subjects-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.new-subject-section {
+    padding: 12px;
+}
+
+.new-subject-input-area {
+    margin: 16px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.new-subject-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--text-color);
+    border-radius: 4px;
+    color: var(--text-color);
+}
+
+.new-subject-btn-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.subjects-list {
+    width: 100%;
+}
+
+.subjects-list-item {
+    width: 100%;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 8px;
+}
+
+.subjects-list-item:hover {
+    cursor: pointer;
+    background-color: var(--card-bg-hover);
+}
+
+.selected {
+    background-color: var(--card-bg-hover);
+}
+
+.subject-name {
+    font-size: 14px
+}

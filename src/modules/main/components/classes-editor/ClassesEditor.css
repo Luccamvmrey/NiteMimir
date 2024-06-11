@@ -1,0 +1,99 @@
+.classes-editor-container {
+    flex: 3 3 0;
+
+    background-color: var(--card-bg);
+    box-shadow: var(--default-shadow);
+    border-radius: 0.5rem;
+
+    padding: 24px;
+}
+
+.classes-editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.new-class-section {
+    width: 85%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: start;
+}
+
+.new-class-section > span {
+    margin-bottom: 16px;
+}
+
+.new-class-input-area {
+    margin: 0 auto;
+}
+
+.new-class-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.new-class-input {
+    flex: 1 1 0;
+    padding: 8px;
+    border: 1px solid var(--text-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    font-family: Sora, sans-serif;
+}
+
+.new-class-btn-area {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 16px;
+}
+
+.classes-list {
+    margin-top: 32px;
+}
+
+.group-title {
+    margin-left: 16px;
+    margin-bottom: 8px;
+}
+
+.classes-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 8px;
+}
+
+.class-professor {
+    flex: 2 2 0;
+}
+
+.class-group {
+    flex: 1 1 0;
+}
+
+.room-info {
+    flex: 4 4 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.time-info {
+    flex: 2 2 0;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 16px;
+}
