@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 
 import "../ClassesEditor.css";
 
@@ -18,38 +18,38 @@ type NewClassSectionProps = {
     setIsNewClassOpen: (value: boolean) => void;
     subjectId: string;
     refreshSubjects: () => void;
+    selectedClass?: IClass;
+    onClose: () => void;
+    setHasAddedSnackbar: (value: boolean) => void;
+    setHasEditedSnackbar: (value: boolean) => void;
 }
 
-type InputValues = {
-    professorName: string;
-    timeIn: string;
-    timeOut: string;
-    roomNumber: string;
-    roomFloor: string;
-    building: string;
-}
+const getInitialState = (selectedClass?: IClass) => ({
+    dayOfWeek: selectedClass?.dayOfWeek,
+    group: selectedClass?.group,
+    professorName: selectedClass?.professorName || "",
+    timeIn: selectedClass?.timeIn || "",
+    timeOut: selectedClass?.timeOut || "",
+    roomNumber: selectedClass?.room.roomNumber.toString() || "",
+    roomFloor: selectedClass?.room.roomFloor.toString() || "",
+    building: selectedClass?.room.building.toString() || ""
+});
 
 const NewClassSection: React.FC<NewClassSectionProps> = (
-    {setIsNewClassOpen, subjectId, refreshSubjects}
+    {setIsNewClassOpen, subjectId, refreshSubjects, selectedClass, onClose, setHasEditedSnackbar, setHasAddedSnackbar}
 ) => {
     const {
-        addClass
+        addClass,
+        updateClass
     } = useClasses();
     const {
         updateSubject
     } = useSubject();
 
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedDayOfWeek, setSelectedDayOfWeek] = useState<DayOfWeek | undefined>();
-    const [selectedGroup, setSelectedGroup] = useState<Group | undefined>();
-    const [inputValues, setInputValues] = useState<InputValues>({
-        professorName: "",
-        timeIn: "",
-        timeOut: "",
-        roomNumber: "",
-        roomFloor: "",
-        building: ""
-    });
+    const [state, setState] = useState(getInitialState(selectedClass));
+
+    const title = selectedClass ? "Editar Aula" : "Dados da Aula";
 
     const getDaysOfWeek = (): DayOfWeek[] => {
         return Object.values(DayOfWeek).filter((day): day is DayOfWeek => typeof day === "number");
@@ -60,60 +60,101 @@ const NewClassSection: React.FC<NewClassSectionProps> = (
     }
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setInputValues({
-            ...inputValues,
+        setState({
+            ...state,
             [e.target.name]: e.target.value
+        });
+    }
+
+    const setSelectedOption = <T,>(name: string, option: T) => {
+        setState({
+            ...state,
+            [name]: option
         });
     }
 
     const onCancel = () => {
         setIsNewClassOpen(false);
+        onClose();
     }
 
-    const isError = ():boolean => {
-        if (selectedDayOfWeek === undefined || selectedGroup === undefined) return true;
-        const isAnyFieldEmpty = Object.values(inputValues).some(value => value === "");
-        if (isAnyFieldEmpty) return true;
-        return subjectId === "";
-    }
+    const isError = () =>
+        state.dayOfWeek === undefined ||
+        state.group === undefined ||
+        Object.values(state).some(value => value === "") ||
+        subjectId === "";
 
-    const onAddNewClass = async () => {
+    const onConfirm = async () => {
         if (isError()) return;
         setIsLoading(true);
 
         const newClass: IClass = {
-            classId: "",
-            dayOfWeek: selectedDayOfWeek as DayOfWeek,
-            professorName: inputValues.professorName,
-            timeIn: inputValues.timeIn,
-            timeOut: inputValues.timeOut,
-            group: selectedGroup as Group,
+            classId: selectedClass?.classId || "",
+            dayOfWeek: state.dayOfWeek as DayOfWeek,
+            professorName: state.professorName,
+            timeIn: state.timeIn,
+            timeOut: state.timeOut,
+            group: state.group as Group,
             room: {
-                roomNumber: parseInt(inputValues.roomNumber),
-                roomFloor: parseInt(inputValues.roomFloor),
-                building: parseInt(inputValues.building)
+                roomNumber: parseInt(state.roomNumber),
+                roomFloor: parseInt(state.roomFloor),
+                building: parseInt(state.building)
             },
         }
 
-        const newClassId = await addClass(newClass);
-        updateSubject(subjectId, newClassId)
+        if (selectedClass) {
+            // Update class
+            onUpdateClass(newClass)
+                .then(() => {
+                    setHasEditedSnackbar(true);
+                })
+        } else {
+            // Add new class
+            onAddNewClass(newClass)
+                .then(() => {
+                    setHasAddedSnackbar(true);
+                })
+        }
+    }
+    const onUpdateClass = async (newClass: IClass) => {
+        await updateClass(newClass)
             .then(() => {
-                refreshSubjects();
-                setIsNewClassOpen(false);
-                setIsLoading(false);
+                endOperation();
+                onClose();
             })
     }
 
+    const onAddNewClass = async (newClass: IClass) => {
+        const newClassId = await addClass(newClass);
+        updateSubject(subjectId, newClassId)
+            .then(() => {
+                endOperation();
+            })
+    }
+    const endOperation = () => {
+        refreshSubjects();
+        setIsNewClassOpen(false);
+        setIsLoading(false);
+        setState(getInitialState());
+    }
+
+    useEffect(() => {
+        if (selectedClass) {
+            setState(getInitialState(selectedClass));
+        }
+    }, [selectedClass]);
+
     return (
         <div className="new-class-section">
-            <span>Dados da Aula</span>
+            <span>{title}</span>
 
             <div className="new-class-input-area">
                 <div className="new-class-row">
                     <Dropdown<DayOfWeek>
+                        name="dayOfWeek"
                         options={getDaysOfWeek()}
-                        selectedOption={selectedDayOfWeek}
-                        setSelectedOption={setSelectedDayOfWeek}
+                        selectedOption={state.dayOfWeek}
+                        setSelectedOption={setSelectedOption}
                         transformOption={getDayOfWeek}
                         placeholder="Dia da Semana"
                     />
@@ -123,6 +164,7 @@ const NewClassSection: React.FC<NewClassSectionProps> = (
                         name="professorName"
                         className="new-class-input"
                         onChange={onChange}
+                        value={state.professorName}
                     />
                     <input
                         type="text"
@@ -130,6 +172,7 @@ const NewClassSection: React.FC<NewClassSectionProps> = (
                         name="timeIn"
                         className="new-class-input"
                         onChange={onChange}
+                        value={state.timeIn}
                     />
                     <input
                         type="text"
@@ -137,13 +180,15 @@ const NewClassSection: React.FC<NewClassSectionProps> = (
                         name="timeOut"
                         className="new-class-input"
                         onChange={onChange}
+                        value={state.timeOut}
                     />
                 </div>
                 <div className="new-class-row">
                     <Dropdown<Group>
+                        name="group"
                         options={getGroups()}
-                        selectedOption={selectedGroup}
-                        setSelectedOption={setSelectedGroup}
+                        selectedOption={state.group}
+                        setSelectedOption={setSelectedOption}
                         transformOption={getGroup}
                         placeholder="Turma"
                     />
@@ -153,6 +198,7 @@ const NewClassSection: React.FC<NewClassSectionProps> = (
                         name="roomNumber"
                         className="new-class-input"
                         onChange={onChange}
+                        value={state.roomNumber}
                     />
                     <input
                         type="text"
@@ -160,6 +206,7 @@ const NewClassSection: React.FC<NewClassSectionProps> = (
                         name="roomFloor"
                         className="new-class-input"
                         onChange={onChange}
+                        value={state.roomFloor}
                     />
                     <input
                         type="text"
@@ -167,6 +214,7 @@ const NewClassSection: React.FC<NewClassSectionProps> = (
                         name="building"
                         className="new-class-input"
                         onChange={onChange}
+                        value={state.building}
                     />
                 </div>
             </div>
@@ -178,7 +226,7 @@ const NewClassSection: React.FC<NewClassSectionProps> = (
                 />
                 <IconButton
                     icon={check}
-                    onClick={onAddNewClass}
+                    onClick={onConfirm}
                 />
             </div>
 

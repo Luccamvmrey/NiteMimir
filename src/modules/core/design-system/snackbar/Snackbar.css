@@ -1,0 +1,52 @@
+.snackbar {
+    position: fixed;
+    margin: 0 auto;
+    z-index: 9999;
+    width: 25%;
+    padding: 24px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    text-align: center;
+    border: 1px solid var(--card-bg-hover);
+    border-radius: 4px;
+    box-shadow: var(--default-shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+
+.top {
+    top: 48px;
+}
+
+.bottom {
+    bottom: 48px;
+}
+
+.two-actions {
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.one-action {
+    display: flex;
+    width: 45%;
+    justify-content: center;
+}
+
+.snackbar-cancel-btn {
+    background-color: var(--error-color);
+    color: var(--text-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+

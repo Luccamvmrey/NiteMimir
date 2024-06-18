@@ -45,7 +45,7 @@
     padding: 8px;
     border: 1px solid var(--text-color);
     border-radius: 4px;
-    color: var(--text-color);
+    color: var(--bg-main);
     font-family: Sora, sans-serif;
 }
 
@@ -78,10 +78,6 @@
     flex: 2 2 0;
 }
 
-.class-group {
-    flex: 1 1 0;
-}
-
 .room-info {
     flex: 4 4 0;
     display: flex;
@@ -91,9 +87,20 @@
 }
 
 .time-info {
-    flex: 2 2 0;
+    flex: 3 3 0;
     display: flex;
     justify-content: end;
     align-items: center;
     gap: 16px;
+}
+
+.delete-btn {
+    flex: 1 1 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-btn:hover {
+    cursor: pointer;
 }

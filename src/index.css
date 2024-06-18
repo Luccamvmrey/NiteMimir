@@ -4,6 +4,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Sora, sans-serif;
 }
 
 :root {
@@ -11,20 +12,15 @@
     --text-color: #F5F5F5;
     --text-color-hover: #E5E5E5;
     --card-bg: rgba(12, 9, 28, 0.7);
-    --card-bg-hover: rgba(12, 9, 28, 0.9);
+    --card-bg-hover: rgb(43, 43, 68);
+    --error-color: #CC0000;
 
     --default-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
 :root {
-  /*font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
-  font-family: Sora, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  /*color: rgba(255, 255, 255, 0.87);*/
-  /*background-color: #242424;*/
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -41,7 +37,8 @@ body {
     margin: 0;
     min-width: 320px;
     min-height: 100vh;
-    background: linear-gradient(180deg, rgba(27,20,62,1) 0%, rgba(20,15,46,1) 100%)
+    background: linear-gradient(180deg, rgba(27,20,62,1) 0%, rgba(20,15,46,1) 100%);
+    color: var(--text-color);
 }
 
 input::placeholder {

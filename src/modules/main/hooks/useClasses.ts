@@ -1,10 +1,12 @@
-import {addDoc, collection, getDocs, query, updateDoc, where} from "firebase/firestore";
+import {addDoc, collection, deleteDoc, doc, getDocs, query, setDoc, updateDoc, where} from "firebase/firestore";
 import {db} from "../../core/services/firebase.ts";
 import {IClass} from "../types/Class";
 
 type useClassesReturn = {
     getClasses: (classIdList: string[]) => Promise<IClass[]>;
     addClass: (classData: IClass) => Promise<string>;
+    updateClass: (classData: IClass) => Promise<void>;
+    deleteClass: (classId: string) => Promise<void>;
 }
 
 export const useClasses = (): useClassesReturn => {
@@ -36,8 +38,22 @@ export const useClasses = (): useClassesReturn => {
         return docRef.id;
     }
 
+    const updateClass = async (classData: IClass): Promise<void> => {
+        const classRef = doc(classesRef, classData.classId);
+        await setDoc(classRef, classData);
+        return;
+    }
+
+    const deleteClass = async (classId: string): Promise<void> => {
+        const classRef = doc(classesRef, classId);
+        await deleteDoc(classRef);
+        return;
+    }
+
     return {
         getClasses,
-        addClass
+        addClass,
+        updateClass,
+        deleteClass
     }
 }

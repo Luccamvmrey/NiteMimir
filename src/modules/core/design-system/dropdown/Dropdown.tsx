@@ -4,21 +4,22 @@ import useClickOutside from "../../hooks/useClickOutside.ts";
 import "./Dropdown.css";
 
 type DropdownProps<T> = {
+    name: string;
     options: T[];
     selectedOption: T | undefined;
-    setSelectedOption: (option: T) => void;
+    setSelectedOption: (name: string, option: T) => void;
     transformOption: (option: T) => string;
     placeholder: string;
 }
 
-const Dropdown = <T,>({options, setSelectedOption, selectedOption, transformOption, placeholder}: DropdownProps<T>) => {
+const Dropdown = <T,>({name, options, setSelectedOption, selectedOption, transformOption, placeholder}: DropdownProps<T>) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
     const onSelectOption = (option: T) => {
-        setSelectedOption(option);
+        setSelectedOption(name, option);
         toggleDropdown();
     }
 

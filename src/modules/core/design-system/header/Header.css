@@ -3,7 +3,7 @@ header {
     justify-content: start;
     padding: 1rem;
     align-items: center;
-    background-color: rgba(12, 9, 28, 0.7);
+    background-color: var(--card-bg);
     color: var(--text-color);
     font-size: 1.5rem;
 }

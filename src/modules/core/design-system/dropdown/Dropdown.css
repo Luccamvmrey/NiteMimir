@@ -1,12 +1,12 @@
 .dropdown-container {
-    min-width: 108px;
+    min-width: 120px;
     flex: 1 1 0;
     height: 33px;
     padding: 0 8px;
     border: 1px solid var(--text-color);
     border-radius: 4px;
     place-self: center;
-    color: var(--text-color);
+    color: #757575;
     background-color: field;
 }
 
@@ -16,11 +16,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .dropdown-list {
-    width: 90px;
+    width: 108px;
     max-height: 100px;
     overflow-y: scroll;
     margin: 0.5rem auto;
